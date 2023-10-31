@@ -9,3 +9,8 @@ profile 버튼 클릭 시, 해당 유저 프로필로 이
 ![image](https://github.com/nohsa97/JS_gitHubFinder/assets/81568105/7e89d602-aafc-4772-9594-3271502329fc)
 
 클릭 시, 해당 Repo로 이동
+
+
+사용 기술. 바닐라 JS , HTML , CSS
+
+async사용 하여 비동기 통신 
