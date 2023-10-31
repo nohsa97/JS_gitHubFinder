@@ -1,15 +1,24 @@
 const user_info_container = document.querySelector('.user_info_container');
 const repo_container = document.querySelector('.repo_container');
 const repo_list_box = document.querySelector('.latest_repo_list');
+const glass_box = document.querySelector('.user_glass_on');
 
 function enter() {
     if(window.event.keyCode == 13){
+
         const user_name = document.querySelector('.input_user_name').value;
         const git_user_url = `https://api.github.com/users/${user_name}`;
         const git_repo_url = `https://api.github.com/users/${user_name}/repos`;
 
         let result = getData(git_user_url);
         result = result.then((user_info) => { 
+            if(user_info.message === 'Not Found'){
+                document.querySelector('.user_glass_on').innerHTML = '';
+                repo_container.classList.remove('display_on');
+                document.querySelector('.user_info_container').classList.remove('display_on_block');
+                repo_list_box.innerHTML = '';
+                return error;
+            }
             //잔디 
             document.querySelector('.user_glass_on').innerHTML = '';
             let user_glass = `https://ghchart.rshah.org/${user_info.login}`;
@@ -31,10 +40,18 @@ function enter() {
             document.querySelector('.info_following').innerHTML = `Following: ${user_info.following}`;
 
             user_info_container.className += ' display_on';
+            glass_box.className += ' display_on';
             return user_info;
         });
 
         result = getData(git_repo_url).then((git_info) => {
+            if(git_info.message === 'Not Found'){
+                document.querySelector('.user_glass_on').innerHTML = '';
+                repo_container.classList.remove('display_on');
+                document.querySelector('.user_info_container').classList.remove('display_on_block');
+                repo_list_box.innerHTML = '';
+                return error;
+            }
             // 레포 리스트 제거
             if(repo_list_box.hasChildNodes()){
                 repo_list_box.innerHTML = '';
@@ -42,10 +59,6 @@ function enter() {
             repo_container.className += ' display_on_block';
             for(var i = 0; i < git_info.length; i ++){
                 addRepoBox(git_info[i]);
-                if(i === 29) {
-                    i = 0;
-
-                }
             }
         });
 
